@@ -1,0 +1,28 @@
+# Сборочные директории
+/build/
+/cmake-build-*/
+/CMakeFiles/
+/CMakeCache.txt
+Makefile
+cmake_install.cmake
+
+# CLion IDE
+.idea/
+*.iml
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Бинарники
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.so
+*.dll
+
+# Логи и отладка
+*.log
+*.tmp
