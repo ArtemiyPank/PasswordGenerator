@@ -12,6 +12,8 @@ public:
     double k, h;
 
 
+    void printLinearParameters() const;
+
     LinearFunction(double P_k, double P_h);
 
     [[nodiscard]] double func(double x) const;

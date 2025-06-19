@@ -10,9 +10,11 @@
 
     class TangentialFunction {
     public:
-        double a, b, c, d, f;
+        double a, b, c, d, f, g;
 
-        TangentialFunction(double P_a, double P_b, double P_c, double P_d, double P_f);
+        TangentialFunction(double P_a, double P_b, double P_c, double P_d, double P_f, double P_g);
+
+        void printTangentialParameters() const;
 
         [[nodiscard]] double func(double x) const;
 

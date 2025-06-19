@@ -1,9 +1,7 @@
 #include "../include/IntersectionPoints.h"
 
 #include <iostream>
-#include <bits/ostream.tcc>
 
-// Конструктор
 IntersectionPoints::IntersectionPoints(
     const TangentialFunction &P_tan_fun,
     const LinearFunction &P_lin_fun
@@ -17,19 +15,23 @@ double IntersectionPoints::f(double x) const {
 
 // Поиск всех точек пересечения на заданном числе подотрезков
 std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerDirection) const {
+    if (countPerDirection <= 0) return {};
+
     std::vector<Point> points;
     points.reserve(countPerDirection);
 
-    // Начальные границы: от 0 до первой асимптоты
+    // Начальные границы: от 1 до 2-ой асимптоты
     std::pair<double, double> bounds = {tan_fun.GetAsymptoteByNumber(1), tan_fun.GetAsymptoteByNumber(2)};
 
     for (int i = 2; i <= countPerDirection + 1; ++i) {
         Point intersection = GetIntersectionInRange(bounds);
         points.push_back(intersection);
 
-        // Сдвигаем границы: новый левый = старый правый, правый — i+1-я асимптота
+        // Сдвигаем границы
         bounds.first = bounds.second;
         bounds.second = tan_fun.GetAsymptoteByNumber(i + 1);
+
+        std::cout << "bounds: " << bounds.first << " | " << bounds.second << std::endl;
     }
 
     return points;
@@ -44,7 +46,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
         throw std::runtime_error("Function does not change sign on interval");
     }
 
-    const int repetitions = static_cast<int>(std::log2((x_max - x_min) / accuracy)) + 1;
+    const int repetitions = fabs(static_cast<int>(std::log2((x_max - x_min) / accuracy)) + 1);
     double c = 0.0;
 
     for (int i = 0; i < repetitions; ++i) {
@@ -52,7 +54,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
         const double value = f(c);
 
         if (std::abs(value) < accuracy) {
-            return Point(c, tan_fun.func(c));
+            return {c, tan_fun.func(c)};
         }
 
         if (value > 0.0) {
@@ -64,5 +66,6 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
 
     // Финальное приближение
     c = (x_min + x_max) / 2.0;
-    return Point(c, tan_fun.func(c));
+
+    return {c, tan_fun.func(c)};
 }

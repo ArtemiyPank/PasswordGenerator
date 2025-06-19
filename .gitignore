@@ -26,3 +26,5 @@ Thumbs.db
 # Логи и отладка
 *.log
 *.tmp
+
+/kusi/
