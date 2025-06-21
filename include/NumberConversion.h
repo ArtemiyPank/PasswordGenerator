@@ -9,4 +9,6 @@
 
 double mapToRange(double raw, double A, double B, bool canBeZero = false, bool takeAbs = false);
 
+int extractFractionDigits(double n, int startPosition, int length);
+
 #endif //NUMBERCONVERSION_H

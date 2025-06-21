@@ -21,7 +21,7 @@ void LinearFunction::printLinearParameters() const {
 
 LinearFunction::LinearFunction(double P_k, double P_h)
     : k(mapToRange(P_k, -5, 5)),
-      h(0) {
+      h(mapToRange(P_h, -5, 5, true)) {
     if (DEBUG && !isInException(FILE_NAME)) {
         printLinearParameters();
     }

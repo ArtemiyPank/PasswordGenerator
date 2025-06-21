@@ -15,3 +15,14 @@ double mapToRange(double raw, double A, double B, bool canBeZero, bool takeAbs) 
 
     return rez;
 }
+
+// Извлечение последовательности цифр из дробной части числа `n`
+int extractFractionDigits(double n, int startPosition, int length) {
+    // отбрасываем всё до startPosition и сдвигаем к нулю
+    n = fmod(std::fabs(n), std::pow(10, -(startPosition - 1))) * pow(10, (startPosition - 1));
+
+    // оставляем столько цифр, сколько нужно
+    n = floor(n * std::pow(10, length));
+
+    return static_cast<int>(n);
+}

@@ -22,7 +22,7 @@ public:
 
 private:
     // Точность поиска
-    const double accuracy = 1e-14;
+    const double accuracy = 1e-8;
 
     // F(x) = tan_fun(x) - lin_fun(x)
     [[nodiscard]] double f(double x) const;

@@ -10,6 +10,9 @@
 
 inline constexpr double Pi = 3.14159265358979323846;
 
+inline int NumberOfDigitsInHexDigitMap = 2;
+
+
 constexpr bool DEBUG = true;
 
 constexpr std::vector<std::string> DebugException = {};
