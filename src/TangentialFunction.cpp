@@ -1,36 +1,22 @@
-#include "../include/TangentialFunction.h"
 #include <cmath>
-#include <cstdint>
 #include <iostream>
 #include <ostream>
 
+#include "TangentialFunction.h"
 #include "NumberConversion.h"
-#include "../include/Const.h"
+#include "Const.h"
+
+static const std::string FILE_NAME = "TangentialFunction";
+
 
 using namespace std;
 
 
 double a, b, c, d, f, g;
 
-// double trim(double value, double mod, bool canBeZero = false, bool take_abs = false) {
-//     cout << "v start = " << value << endl;
-//
-//     double v = std::fmod(value, mod);
-//     if (take_abs) v = std::fabs(v);
-//     if (!canBeZero && v == 0.0) v = 1e-6;
-//
-//     static constexpr double scale = 1e10;
-//     v = std::round(v * scale) / scale;
-//
-//     cout << "v end = " << v << endl;
-//
-//
-//     return v;
-// }
-
 
 void TangentialFunction::printTangentialParameters() const {
-    cout << "========= Tangential Function Parameters" << endl;
+    std::cout << "---------------------- Tangential Function Parameters ----------------------" << std::endl;
 
     cout << "a = " << a << endl;
     cout << "b = " << b << endl;
@@ -39,7 +25,7 @@ void TangentialFunction::printTangentialParameters() const {
     cout << "f = " << f << endl;
     cout << "g = " << g << endl;
 
-    cout << "========= -------------------------------" << endl;
+    std::cout << "====================== ====================== ======================" << std::endl;
 }
 
 
@@ -50,8 +36,9 @@ TangentialFunction::TangentialFunction(double P_a, double P_b, double P_c, doubl
                                                      d(mapToRange(P_d, -5.0, 5.0)),
                                                      f(mapToRange(P_f, -10.0, 10.0)),
                                                      g(mapToRange(P_g, -10.0, 10.0)) {
-
-    printTangentialParameters();
+    if (DEBUG && !isInException(FILE_NAME)) {
+        printTangentialParameters();
+    }
 }
 
 

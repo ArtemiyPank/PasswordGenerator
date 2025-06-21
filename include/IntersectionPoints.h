@@ -1,15 +1,15 @@
 #ifndef INTERSECTIONPOINTS_H
 #define INTERSECTIONPOINTS_H
 
+#include <string>
 #include <vector>
-#include <stdexcept>
-#include <cmath>
 #include <utility>
-
 #include "Point.h"
-#include "Const.h"
+
 #include "LinearFunction.h"
 #include "TangentialFunction.h"
+
+
 
 class IntersectionPoints {
 public:
@@ -22,7 +22,7 @@ public:
 
 private:
     // Точность поиска
-    static constexpr double accuracy = 1e-14;
+    const double accuracy = 1e-14;
 
     // F(x) = tan_fun(x) - lin_fun(x)
     [[nodiscard]] double f(double x) const;

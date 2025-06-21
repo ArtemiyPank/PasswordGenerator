@@ -1,6 +1,12 @@
 #include "../include/IntersectionPoints.h"
 
+#include <cmath>
 #include <iostream>
+
+#include "Const.h"
+
+static const std::string FILE_NAME = "IntersectionPoints";
+
 
 IntersectionPoints::IntersectionPoints(
     const TangentialFunction &P_tan_fun,
@@ -20,8 +26,11 @@ std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerD
     std::vector<Point> points;
     points.reserve(countPerDirection);
 
-    // Начальные границы: от 1 до 2-ой асимптоты
+    // Начальные границы: от 1 до 2-й асимптоты
     std::pair<double, double> bounds = {tan_fun.GetAsymptoteByNumber(1), tan_fun.GetAsymptoteByNumber(2)};
+
+    if (DEBUG && !isInException(FILE_NAME))
+        std::cout << "---------------------- Intersection boundaries ----------------------" << std::endl;
 
     for (int i = 2; i <= countPerDirection + 1; ++i) {
         Point intersection = GetIntersectionInRange(bounds);
@@ -31,8 +40,17 @@ std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerD
         bounds.first = bounds.second;
         bounds.second = tan_fun.GetAsymptoteByNumber(i + 1);
 
-        std::cout << "bounds: " << bounds.first << " | " << bounds.second << std::endl;
+        if (DEBUG && !isInException(FILE_NAME)) {
+
+            std::cout << "bounds (" << i - 1 << "): " << bounds.first << " | " << bounds.second << std::endl;
+
+
+        }
     }
+
+    if (DEBUG && !isInException(FILE_NAME))
+        std::cout << "====================== ====================== ======================" << std::endl;
+
 
     return points;
 }
@@ -46,7 +64,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
         throw std::runtime_error("Function does not change sign on interval");
     }
 
-    const int repetitions = fabs(static_cast<int>(std::log2((x_max - x_min) / accuracy)) + 1);
+    const int repetitions = std::fabs(static_cast<int>(std::log2((x_max - x_min) / accuracy)) + 1);
     double c = 0.0;
 
     for (int i = 0; i < repetitions; ++i) {

@@ -10,15 +10,16 @@ add_executable(PasswordGenerator
         src/LinearFunction.cpp
         include/TangentialFunction.h
         src/TangentialFunction.cpp
-        include/FindIntersectionPoint.h
-        src/FindIntersectionPoint.cpp
         include/IntersectionPoints.h
         src/IntersectionPoints.cpp
         include/Const.h
         include/Point.h
         src/HashesProcessing.cpp
         include/NumberConversion.h
-        src/NumberConversion.cpp)
+        src/NumberConversion.cpp
+        include/BitsProcessing.h
+        src/BitsProcessing.cpp
+        src/HexDigitMap.cpp)
 
 # для основного приложения
 target_include_directories(PasswordGenerator PRIVATE ${CMAKE_SOURCE_DIR}/include)
@@ -28,6 +29,8 @@ target_link_libraries(PasswordGenerator PRIVATE cryptopp)
 # для kusi
 add_executable(kusi
         kusi/kus1.cpp
+        include/BitsProcessing.h
+        include/HexDigitMap.h
 )
 
 target_include_directories(kusi PRIVATE ${CMAKE_SOURCE_DIR}/include)

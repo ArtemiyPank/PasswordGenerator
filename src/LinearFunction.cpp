@@ -1,30 +1,30 @@
-//
-// Created by artemiypank on 6/8/25.
-//
-
-#include "../include/LinearFunction.h"
-
 #include <iostream>
 
+#include "LinearFunction.h"
+#include "Const.h"
 #include "NumberConversion.h"
 
 using namespace std;
 
+static const std::string FILE_NAME = "LinearFunction";
+
 double k, h;
 
 void LinearFunction::printLinearParameters() const {
-    cout << "========= Linear Function Parameters" << endl;
+    std::cout << "---------------------- Linear Function Parameters ----------------------" << std::endl;
 
     cout << "k = " << k << endl;
     cout << "h = " << h << endl;
 
-    cout << "========= -------------------------------" << endl;
+    std::cout << "====================== ====================== ======================" << std::endl;
 }
+
 LinearFunction::LinearFunction(double P_k, double P_h)
     : k(mapToRange(P_k, -5, 5)),
-      h(mapToRange(P_h, -15, 15, true)) {
-
-    printLinearParameters();
+      h(0) {
+    if (DEBUG && !isInException(FILE_NAME)) {
+        printLinearParameters();
+    }
 }
 
 double LinearFunction::func(double x) const {

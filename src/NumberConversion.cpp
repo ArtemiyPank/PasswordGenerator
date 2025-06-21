@@ -1,6 +1,9 @@
-#include "../include/NumberConversion.h"
 #include <cmath>
 
+#include "NumberConversion.h"
+
+
+static const std::string FILE_NAME = "NumberConversion";
 
 // алгоритм линейной интерполяции
 double mapToRange(double raw, double A, double B, bool canBeZero, bool takeAbs) {
