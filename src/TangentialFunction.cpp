@@ -9,8 +9,6 @@
 static const std::string FILE_NAME = "TangentialFunction";
 
 
-using namespace std;
-
 
 double a, b, c, d, f, g;
 
@@ -18,12 +16,12 @@ double a, b, c, d, f, g;
 void TangentialFunction::printTangentialParameters() const {
     std::cout << "---------------------- Tangential Function Parameters ----------------------" << std::endl;
 
-    cout << "a = " << a << endl;
-    cout << "b = " << b << endl;
-    cout << "c = " << c << endl;
-    cout << "d = " << d << endl;
-    cout << "f = " << f << endl;
-    cout << "g = " << g << endl;
+    std::cout << "a = " << a << std::endl;
+    std::cout << "b = " << b << std::endl;
+    std::cout << "c = " << c << std::endl;
+    std::cout << "d = " << d << std::endl;
+    std::cout << "f = " << f << std::endl;
+    std::cout << "g = " << g << std::endl;
 
     std::cout << "====================== ====================== ======================" << std::endl;
 }

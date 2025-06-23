@@ -6,7 +6,6 @@
 #include "NumberConversion.h"
 
 
-
 static const std::string FILE_NAME = "NumberConversion";
 
 // алгоритм линейной интерполяции
@@ -83,7 +82,6 @@ long long fromBase(const std::string &s) {
     }
     return neg ? -result : result;
 }
-
 
 std::string fromBin2Tern(const std::string &v) { return toBase<3>(fromBase<2>(v)); }
 std::string fromBin2Hex(const std::string &v) { return toBase<16>(fromBase<2>(v)); }

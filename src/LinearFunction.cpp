@@ -4,8 +4,6 @@
 #include "Const.h"
 #include "NumberConversion.h"
 
-using namespace std;
-
 static const std::string FILE_NAME = "LinearFunction";
 
 double k, h;
@@ -13,8 +11,8 @@ double k, h;
 void LinearFunction::printLinearParameters() const {
     std::cout << "---------------------- Linear Function Parameters ----------------------" << std::endl;
 
-    cout << "k = " << k << endl;
-    cout << "h = " << h << endl;
+    std::cout << "k = " << k << std::endl;
+    std::cout << "h = " << h << std::endl;
 
     std::cout << "====================== ====================== ======================" << std::endl;
 }

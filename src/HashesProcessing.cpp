@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 #include <iomanip>
+#include <bitset>
+
 #include "HashesProcessing.h"
 
 #include "BitsProcessing.h"

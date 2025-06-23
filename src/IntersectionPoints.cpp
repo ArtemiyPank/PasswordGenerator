@@ -19,7 +19,7 @@ double IntersectionPoints::f(double x) const {
     return tan_fun.func(x) - lin_fun.func(x);
 }
 
-// Поиск всех точек пересечения на заданном числе подотрезков
+// Поиск точек пересечения на заданном числе подотрезков
 std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerDirection) const {
     if (countPerDirection <= 0) return {};
 
@@ -68,7 +68,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
     double c = 0.0;
 
     for (int i = 0; i < repetitions; ++i) {
-        c = (x_min + x_max) / 2.0;
+        c = 0.5 * (x_min + x_max);
         const double value = f(c);
 
         if (std::abs(value) < accuracy) {

@@ -15,15 +15,18 @@ std::string FILE_NAME = "PasswordMaskGenerator";
 std::array<int, 16> getPasswordMask(const std::bitset<256> &rowBits) {
     const std::string rowBitsString = rowBits.to_string();
 
-    const std::string tern_s = fromBin2Tern(rowBitsString.substr(0, 64));
-
+    std::string tern_s;
+    for (int i = 0; i < 4; ++i) {
+        std::string substring = rowBits.to_string().substr(16 * i, 16);
+        tern_s += fromBin2Tern(substring);
+    }
 
     std::array<int, 16> bigPartsMask{};
     std::transform(tern_s.begin(), tern_s.begin() + 16, bigPartsMask.begin(),
                    [](const char c) { return c - '0'; });
 
 
-    const std::string bin_s = rowBitsString.substr(129, 64);
+    const std::string bin_s = rowBitsString.substr(129, 16);
     std::array<int, 16> numbersAndSpecialCharactersMask{};
     std::transform(bin_s.begin(), bin_s.begin() + 16, numbersAndSpecialCharactersMask.begin(),
                    [](const char c) { return c - '0'; });
