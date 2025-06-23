@@ -19,7 +19,8 @@ add_executable(PasswordGenerator
         src/NumberConversion.cpp
         include/BitsProcessing.h
         src/BitsProcessing.cpp
-        src/HexDigitMap.cpp)
+        src/HexDigitMap.cpp
+        "src/PasswordMaskGenerator.cpp")
 
 # для основного приложения
 target_include_directories(PasswordGenerator PRIVATE ${CMAKE_SOURCE_DIR}/include)
@@ -31,6 +32,7 @@ add_executable(kusi
         kusi/kus1.cpp
         include/BitsProcessing.h
         include/HexDigitMap.h
+        "include/PasswordMaskGenerator.h"
 )
 
 target_include_directories(kusi PRIVATE ${CMAKE_SOURCE_DIR}/include)

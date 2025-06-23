@@ -7,12 +7,14 @@
 #include <iomanip>
 #include "HashesProcessing.h"
 
+#include "BitsProcessing.h"
+
 using namespace CryptoPP;
 
 static const std::string FILE_NAME = "HashesProcessing";
 
 
-std::string GetHash_HSA_512(const std::string &master) {
+std::bitset<512> GetHash_HSA_512(const std::string &master) {
     HexEncoder encoder(new FileSink(std::cout));
 
     std::string digest;
@@ -22,8 +24,11 @@ std::string GetHash_HSA_512(const std::string &master) {
     digest.resize(hash.DigestSize());
     hash.Final(reinterpret_cast<byte *>(&digest[0]));
 
-    return digest;
+    const std::bitset<512> bits = getBitset512FromString(digest);
+
+    return bits;
 }
+
 
 
 

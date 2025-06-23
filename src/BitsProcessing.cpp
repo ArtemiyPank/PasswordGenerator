@@ -11,7 +11,18 @@
 
 static const std::string FILE_NAME = "BitsProcessing";
 
+std::bitset<512> getBitset512FromString(const std::string &str) {
+    std::bitset<512> bits;
+    size_t pos = 0;
+    for (const auto b: str) {
+        for (int i = 7; i >= 0; --i) {
+            bits[pos] = (b >> i) & 1;
+            pos++;
+        }
+    }
 
+    return bits;
+}
 
 double bitsetToDouble(const std::bitset<64> &bits) {
     const uint64_t uint64 = bits.to_ullong();

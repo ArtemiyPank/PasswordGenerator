@@ -3,7 +3,6 @@
 #include <bitset>
 
 
-
 template<std::size_t N>
 void printBitset(const std::bitset<N> &bits) {
     for (size_t i = 0; i < N; ++i) {
@@ -17,6 +16,8 @@ inline void printBits_uint64_t(const uint64_t x) {
     const std::bitset<64> bs(x);
     printBitset(bs);
 }
+
+std::bitset<512> getBitset512FromString(const std::string &str);
 
 
 double bitsetToDouble(const std::bitset<64>& bits);

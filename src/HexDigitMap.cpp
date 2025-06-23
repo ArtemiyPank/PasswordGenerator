@@ -1,7 +1,3 @@
-//
-// Created by artemiypank on 6/21/25.
-//
-
 #include <array>
 #include <iomanip>
 #include <iostream>
@@ -28,17 +24,7 @@ static const std::string FILE_NAME = "HexDigitMap";
 
 
 std::array<double, 8> GetParamsFromMasterKey(const std::string &master) {
-    std::string digest = GetHash_HSA_512(master);
-
-    std::bitset<512> bits;
-    size_t pos = 0;
-    for (const auto b: digest) {
-        for (int i = 7; i >= 0; --i) {
-            bits[pos] = (b >> i) & 1;
-            pos++;
-        }
-    }
-
+    const std::bitset<512> bits = GetHash_HSA_512(master);
 
     if (DEBUG && !isInException(FILE_NAME)) {
         std::cout << "---------------------- Master key and hash ----------------------" << std::endl;

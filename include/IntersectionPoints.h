@@ -1,7 +1,6 @@
 #ifndef INTERSECTIONPOINTS_H
 #define INTERSECTIONPOINTS_H
 
-#include <string>
 #include <vector>
 #include <utility>
 #include "Point.h"

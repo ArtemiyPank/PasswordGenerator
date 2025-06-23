@@ -1,10 +1,10 @@
 #ifndef CRYPTO_UTILS_H
 #define CRYPTO_UTILS_H
 
-#include <array>
+#include <bitset>
 #include <string>
 
 
-std::string GetHash_HSA_512(const std::string &master);
+std::bitset<512> GetHash_HSA_512(const std::string &master);
 
 #endif // CRYPTO_UTILS_H

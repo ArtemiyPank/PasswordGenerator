@@ -1,7 +1,3 @@
-//
-// Created by artemiypank on 6/21/25.
-//
-
 #ifndef HEXDIGITMAP_H
 #define HEXDIGITMAP_H
 
