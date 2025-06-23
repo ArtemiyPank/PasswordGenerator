@@ -79,15 +79,11 @@ struct Point { double x, y; };
     * Split master‑hash bits into eight 64‑bit blocks, map to double → parameters $p_0…p_7$.
     * Instantiate:
 
-      $$
-      f_{\tan}(x) = g \cdot \frac{c\,\tan(a x + b) + d}{f},
-      \quad f_{lin}(x) = k x + h.
-      $$
+      $f_{\tan}(x) = g \cdot \frac{c\,\tan(a x + b) + d}{f},
+      \quad f_{lin}(x) = k x + h.$
     * Vertical asymptotes:
 
-      $$
-      x_n = \frac{\frac{\pi}{2} + (n - 1)\pi - b}{a}.
-      $$
+      $x_n = \frac{\frac{\pi}{2} + (n - 1)\pi - b}{a}.$
     * Compute 16 intersections over successive intervals between asymptotes.
     * Extract three fractional digits from each $x,y$ → 16 integer.
     * Map hex digits '0'–'F' to these values → hex‑digit map.
@@ -119,7 +115,7 @@ struct Point { double x, y; };
 ### 1. Master Key → Hex‑Digit Map
 
 1. Compute digest:
-   $ H = \mathrm{SHA3\_512}(\text{masterKey}) \; (512\text{-bit}).$
+   $H = \mathrm{SHA3\_512}(\text{masterKey}) \; (512\text{-bit}).$
 2. Convert to `bitset<512>`, split into eight 64‑bit chunks.
 3. For each chunk:
 
@@ -128,15 +124,11 @@ struct Point { double x, y; };
     * Parameter $p_i = d - 1 \in [0,1)$.
 4. Use $p_0…p_5$ in:
 
-   $$
-   f_{\tan}(x) = g \;\frac{c\,\tan(a x + b)+d}{f},
-   \quad f_{lin}(x)=k x + h.
-   $$
+   $f_{\tan}(x) = g \;\frac{c\,\tan(a x + b)+d}{f},
+   \quad f_{lin}(x)=k x + h.$
 5. Asymptotes:
 
-   $$
-   x_n = \frac{\frac{\pi}{2} + (n-1)\pi - b}{a}.
-   $$
+   $x_n = \frac{\frac{\pi}{2} + (n-1)\pi - b}{a}.$
 6. Find 16 intersections via bisection in each interval.
 7. Extract three fractional digits from each intersection’s $x,y$ → 16 ints.
 8. Map ‘0’–‘F’ to these values → the final hex ‑ digit map.
@@ -151,13 +143,16 @@ struct Point { double x, y; };
     * Bits 129–144 → `numSpecMask[i]\in\{0,1\}`.
     * Final mask:
 
-      $$
-      \text{mask}[i] = \begin{cases}
-      2,&\text{if }m_i=2\text{ and }s_j=1,\\
-      3,&\text{if }m_i=2\text{ and }s_j=0,\\
-      m_i,&\text{otherwise}.
-      \end{cases}
-      $$
+$$
+\mathrm{mask}[i] =
+\begin{cases}
+2, & \text{if } m_i = 2 \text{ and } s_j = 1,\\
+3, & \text{if } m_i = 2 \text{ and } s_j = 0,\\
+m_i, & \text{otherwise}.
+\end{cases}
+$$
+
+
 
 ### 3. Mask → Password
 
