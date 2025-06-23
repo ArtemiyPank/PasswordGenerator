@@ -1,99 +1,92 @@
 #include <bitset>
-#include <cstdint>
 #include <iomanip>
 #include <iostream>
 
+#include "PasswordMaskGenerator.h"
 #include "HashesProcessing.h"
 #include "HexDigitMap.h"
 #include "NumberConversion.h"
-#include "PasswordMaskGenerator.h"
-
 
 const std::string FILE_NAME = "PasswordGenerator";
 
+// Print the password in a styled box
+void printPasswordPretty(const std::string &password) {
 
-constexpr char RESET[]   = "\033[0m";
-constexpr char BOLD[]    = "\033[1m";
-constexpr char FG_CYAN[] = "\033[36m";
+    // ANSI escape codes for colored, bold output
+    constexpr char RESET[] = "\033[0m";
+    constexpr char BOLD[] = "\033[1m";
+    constexpr char FG_CYAN[] = "\033[36m";
 
-void printPasswordPretty(const std::string& password) {
-    const size_t w = password.size() + 4;
-
-    const std::string border(w, '-');
+    const size_t width = password.size() + 4;
+    const std::string border(width, '-');
 
     std::cout << BOLD << FG_CYAN
-        << "┌" << border << "┐\n"
-        << "│  " << password << "  │\n"
-        << "└" << border << "┘\n"
-        << RESET
-    ;
+            << "┌" << border << "┐\n"
+            << "│  " << password << "  │\n"
+            << "└" << border << "┘\n"
+            << RESET;
 }
 
+// Character sets used for mask application
 const std::string capitalLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
 const std::string lowercaseLetters = "abcdefghijklmnopqrstuvwxyz";
-
 const std::string numbers = "0123456789";
-
 const std::string specialCharacters = "-_+=.@#^&*~`";
 
-
-
-std::string applyPasswordMask(const std::string encodedPassword, const std::array<int, 16> &mask) {
+// Apply the mask to two-digit codes, producing the final password characters
+std::string applyPasswordMask(const std::string &encodedPassword, const std::array<int, 16> &mask) {
     std::string password;
-
     for (int i = 0; i < 16; ++i) {
-        const int num = std::stoi(encodedPassword.substr(2*i, 2));
-        if (mask[i] == 0) {
-            password += capitalLetters[num % capitalLetters.size()];
-        } else if (mask[i] == 1) {
-            password += lowercaseLetters[num % lowercaseLetters.size()];
-        } else if (mask[i] == 2) {
-            password += numbers[num % numbers.size()];
-        } else if (mask[i] == 3) {
-            password += specialCharacters[num % specialCharacters.size()];
+        int num = std::stoi(encodedPassword.substr(2 * i, 2));
+        switch (mask[i]) {
+            case 0: password += capitalLetters[num % capitalLetters.size()];
+                break;
+            case 1: password += lowercaseLetters[num % lowercaseLetters.size()];
+                break;
+            case 2: password += numbers[num % numbers.size()];
+                break;
+            case 3: password += specialCharacters[num % specialCharacters.size()];
+                break;
         }
     }
-
     return password;
 }
 
-std::string generatePassword(const std::bitset<256> &rowBits, std::map<char, int> hexDigitMap, const std::array<int, 16> &mask) {
+// Generate the password by converting bits → hex → codes → mask
+std::string generatePassword(const std::bitset<256> &rowBits,
+                             const std::map<char, int> &hexDigitMap,
+                             const std::array<int, 16> &mask) {
+    // Convert each 16-bit segment to hex digits
     std::string hexString;
-
+    std::string bits = rowBits.to_string();
     for (int i = 0; i < 16; ++i) {
-        std::string substring = rowBits.to_string().substr(16 * i, 16);
-        hexString += fromBin2Hex(substring);
+        hexString += fromBin2Hex(bits.substr(16 * i, 16));
+    }
+    // Left-pad if necessary
+    if (hexString.size() < 16) {
+        hexString.insert(0, 16 - hexString.size(), '0');
     }
 
-    if (hexString.size() < 16) hexString = std::string(16 - hexString.size(), '0') + hexString;
-
+    // Map each hex char to a two-digit code
     std::string encodedPassword;
-    for (char hexCharacter: hexString) {
-        const std::string encryptedCharacter = hexDigitMap[hexCharacter] < 10
-                                                   ? "0" + std::to_string(hexDigitMap[hexCharacter])
-                                                   : std::to_string(hexDigitMap[hexCharacter]);
-        encodedPassword += encryptedCharacter;
+    encodedPassword.reserve(32);
+    for (char hc: hexString) {
+        int val = hexDigitMap.at(hc);
+        encodedPassword += (val < 10 ? "0" : "") + std::to_string(val);
     }
 
-    std::string password = applyPasswordMask(encodedPassword, mask);
-
-    return password;
+    // Apply mask to produce the final password
+    return applyPasswordMask(encodedPassword, mask);
 }
 
 int main() {
     const std::string master = "Master";
-
-    const std::string appName = "AppName";
+    const std::string appName = "Google";
 
     std::map<char, int> hexDigitMap = GetHexDigitMap(master);
 
-
     std::bitset<512> appNameHashInBits = GetHash_HSA_512(appName);
-
-
     std::bitset<256> low, high;
-
     for (std::size_t i = 0; i < 256; i++) {
         low[i] = appNameHashInBits[i];
         high[i] = appNameHashInBits[i + 256];
@@ -103,6 +96,9 @@ int main() {
 
     const std::string password = generatePassword(high, hexDigitMap, mask);
 
+
+    std::cout << "Master key: " << master << std::endl;
+    std::cout << "App name: " << appName << std::endl;
     printPasswordPretty(password);
 
     return 0;

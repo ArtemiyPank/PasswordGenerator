@@ -25,19 +25,5 @@ add_executable(PasswordGenerator
         include/PasswordMaskGenerator.h
         src/PasswordMaskGenerator.cpp)
 
-# для основного приложения
 target_include_directories(PasswordGenerator PRIVATE ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(PasswordGenerator PRIVATE cryptopp)
-#
-
-
-# для kusi
-add_executable(kusi
-        kusi/kus1.cpp
-        include/BitsProcessing.h
-        include/HexDigitMap.h
-        "include/PasswordMaskGenerator.h"
-)
-
-target_include_directories(kusi PRIVATE ${CMAKE_SOURCE_DIR}/include)
-target_link_libraries(kusi PRIVATE cryptopp)

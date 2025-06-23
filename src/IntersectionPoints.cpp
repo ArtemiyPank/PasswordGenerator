@@ -1,12 +1,10 @@
-#include "../include/IntersectionPoints.h"
-
 #include <cmath>
 #include <iostream>
 
+#include "IntersectionPoints.h"
 #include "Const.h"
 
 static const std::string FILE_NAME = "IntersectionPoints";
-
 
 IntersectionPoints::IntersectionPoints(
     const TangentialFunction &P_tan_fun,
@@ -14,20 +12,23 @@ IntersectionPoints::IntersectionPoints(
 ) : tan_fun(P_tan_fun), lin_fun(P_lin_fun) {
 }
 
-// Разность функций f(x) = tan_fun(x) - lin_fun(x)
+// Compute difference between tangential and linear functions at x
 double IntersectionPoints::f(double x) const {
     return tan_fun.func(x) - lin_fun.func(x);
 }
 
-// Поиск точек пересечения на заданном числе подотрезков
+// Find intersection points over a specified number of intervals
 std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerDirection) const {
     if (countPerDirection <= 0) return {};
 
     std::vector<Point> points;
     points.reserve(countPerDirection);
 
-    // Начальные границы: от 1 до 2-й асимптоты
-    std::pair<double, double> bounds = {tan_fun.GetAsymptoteByNumber(1), tan_fun.GetAsymptoteByNumber(2)};
+    // Initial interval between the 1st and 2nd asymptotes
+    std::pair<double, double> bounds = {
+        tan_fun.GetAsymptoteByNumber(1),
+        tan_fun.GetAsymptoteByNumber(2)
+    };
 
     if (DEBUG && !isInException(FILE_NAME))
         std::cout << "---------------------- Intersection boundaries ----------------------" << std::endl;
@@ -36,26 +37,23 @@ std::vector<Point> IntersectionPoints::GetIntersectionPoints(const int countPerD
         Point intersection = GetIntersectionInRange(bounds);
         points.push_back(intersection);
 
-        // Сдвигаем границы
+        // Shift interval boundaries to the next asymptotes
         bounds.first = bounds.second;
         bounds.second = tan_fun.GetAsymptoteByNumber(i + 1);
 
         if (DEBUG && !isInException(FILE_NAME)) {
-
-            std::cout << "bounds (" << i - 1 << "): " << bounds.first << " | " << bounds.second << std::endl;
-
-
+            std::cout << "Bounds " << (i - 1) << ": "
+                    << bounds.first << " | " << bounds.second << "\n";
         }
     }
 
     if (DEBUG && !isInException(FILE_NAME))
         std::cout << "====================== ====================== ======================" << std::endl;
 
-
     return points;
 }
 
-// Метод бисекции для поиска одной точки пересечения на заданном промежутке
+// Bisection method to find one intersection within the given range
 Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double> &x_range) const {
     double x_min = x_range.first + accuracy;
     double x_max = x_range.second - accuracy;
@@ -64,7 +62,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
         throw std::runtime_error("Function does not change sign on interval");
     }
 
-    const int repetitions = std::fabs(static_cast<int>(std::log2((x_max - x_min) / accuracy)) + 1);
+    const int repetitions = std::abs(static_cast<int>(std::log2((x_max - x_min) / accuracy))) + 1;
     double c = 0.0;
 
     for (int i = 0; i < repetitions; ++i) {
@@ -82,8 +80,7 @@ Point IntersectionPoints::GetIntersectionInRange(const std::pair<double, double>
         }
     }
 
-    // Финальное приближение
-    c = (x_min + x_max) / 2.0;
-
+    // Final approximation
+    c = 0.5 * (x_min + x_max);
     return {c, tan_fun.func(c)};
 }

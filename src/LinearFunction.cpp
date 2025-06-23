@@ -18,13 +18,15 @@ void LinearFunction::printLinearParameters() const {
 }
 
 LinearFunction::LinearFunction(double P_k, double P_h)
-    : k(mapToRange(P_k, -5, 5)),
-      h(mapToRange(P_h, -5, 5, true)) {
+    : k(mapToRange(P_k, -5, 5)),    // clamp P_k to [-5, 5] / {0}
+      h(mapToRange(P_h, -100, 100, true))// clamp P_h to [-100, 100]
+{
     if (DEBUG && !isInException(FILE_NAME)) {
         printLinearParameters();
     }
 }
 
+// y = kx + h
 double LinearFunction::func(double x) const {
     return k * x + h;
 }

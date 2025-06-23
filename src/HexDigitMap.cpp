@@ -9,7 +9,6 @@
 #include <map>
 
 #include "HexDigitMap.h"
-
 #include "BitsProcessing.h"
 #include "Const.h"
 #include "HashesProcessing.h"
@@ -18,23 +17,18 @@
 #include "NumberConversion.h"
 #include "TangentialFunction.h"
 
-using namespace CryptoPP;
-
 static const std::string FILE_NAME = "HexDigitMap";
 
 
+// Derive eight uniform parameters in [0,1) from the master key
 std::array<double, 8> GetParamsFromMasterKey(const std::string &master) {
     const std::bitset<512> bits = GetHash_HSA_512(master);
 
     if (DEBUG && !isInException(FILE_NAME)) {
-        std::cout << "---------------------- Master key and hash ----------------------" << std::endl;
-
-        std::cout << "Master key: " << master << std::endl;
-
-        std::cout << "Hash in bits: ";
-
+        std::cout << "---------------------- Master key and hash ----------------------\n"
+                  << "Master key: " << master << "\n"
+                  << "Hash in bits: ";
         printBitset(bits);
-
         std::cout << "====================== ====================== ======================" << std::endl;
     }
 
@@ -42,6 +36,7 @@ std::array<double, 8> GetParamsFromMasterKey(const std::string &master) {
 }
 
 
+// Generate 16 row indices by intersecting a tangent-based and linear function
 std::array<int, 16> GetRowNumbersForMap(const std::string &master) {
     const std::array<double, 8> params = GetParamsFromMasterKey(master);
 
@@ -59,15 +54,8 @@ std::array<int, 16> GetRowNumbersForMap(const std::string &master) {
         rowNumbersForMap[i * 2 + 1] = extractFractionDigits(points[i].y, 3, NumberOfDigitsInHexDigitMap);
     }
 
-
     if (DEBUG && !isInException(FILE_NAME)) {
         std::cout << std::fixed << std::setprecision(20);
-
-        std::cout << "---------------------- Parameters [0; 1) ----------------------" << std::endl;
-        for (const double parameter: params) {
-            std::cout << parameter << std::endl;
-        }
-        std::cout << "====================== ====================== ======================" << std::endl;
 
         std::cout << "---------------------- Intersection points ----------------------" << std::endl;
         for (const Point point: points) {
@@ -82,10 +70,11 @@ std::array<int, 16> GetRowNumbersForMap(const std::string &master) {
         std::cout << "====================== ====================== ======================" << std::endl;
     }
 
-
     return rowNumbersForMap;
 }
 
+
+// Build a mapping from hex digit to its corresponding row number
 std::map<char, int> GetHexDigitMap(const std::string &master) {
     std::array<int, 16> rowNumbersForMap = GetRowNumbersForMap(master);
 
