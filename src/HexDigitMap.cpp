@@ -45,7 +45,7 @@ std::array<int, 16> GetRowNumbersForMap(const std::string &master) {
 
     const auto intersection = IntersectionPoints(tan, linear);
 
-    const std::vector<Point> points = intersection.GetIntersectionPoints(16);
+    const std::vector<Point> points = intersection.GetIntersectionPoints(8);
 
 
     std::array<int, 16> rowNumbersForMap{};
@@ -74,7 +74,7 @@ std::array<int, 16> GetRowNumbersForMap(const std::string &master) {
 }
 
 
-// Build a mapping from hex digit to its corresponding row number
+// Build a mapping from a hex digit to its corresponding row number
 std::map<char, int> GetHexDigitMap(const std::string &master) {
     std::array<int, 16> rowNumbersForMap = GetRowNumbersForMap(master);
 
